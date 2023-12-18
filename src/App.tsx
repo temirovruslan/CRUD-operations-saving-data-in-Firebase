@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { sectorsData } from "./helper/data";
-import { MenuItem, SelectedItem } from "./helper/type";
+import { MenuItem } from "./helper/type";
 
 function renderSubMenu(item: MenuItem): React.ReactNode {
 	if (item.children && item.children.length > 0) {
@@ -40,10 +40,7 @@ function App() {
 	const [isFocused, setFocused] = useState(false);
 
 	const userCollection = collection(db, "userInfo");
-	const [selectedItem, setSelectedItem] = useState<
-		SelectedItem | undefined
-	>();
-	//
+
 	const handleEditClick = (userId: string) => {
 		const userToEdit = users.find(
 			(user: { id: string }) => user.id === userId
@@ -102,10 +99,10 @@ function App() {
 	const handleMenuClick: (info: MenuInfo & { key: React.Key }) => void = (
 		info
 	) => {
-		const { key, domEvent } = info;
+		const { domEvent } = info;
 		const value = (domEvent.currentTarget as HTMLElement).innerText;
 		setNewUser((prevUser) => ({ ...prevUser, selected: value }));
-		setSelectedItem({ key: String(key), value });
+		// setSelectedItem({ key: String(key), value });
 	};
 	const handleChange = (e: any) => {
 		const { name, value, type, checked } = e.currentTarget;
@@ -180,7 +177,7 @@ function App() {
 			{sectorsData && (
 				<Dropdown
 					overlay={
-						<Menu onClick={handleMenuClick} placement="bottom">
+						<Menu onClick={handleMenuClick}>
 							{sectorsData.map((item) => renderSubMenu(item))}
 						</Menu>
 					}
