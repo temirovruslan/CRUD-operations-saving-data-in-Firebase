@@ -102,7 +102,6 @@ function App() {
 		const { domEvent } = info;
 		const value = (domEvent.currentTarget as HTMLElement).innerText;
 		setNewUser((prevUser) => ({ ...prevUser, selected: value }));
-		// setSelectedItem({ key: String(key), value });
 	};
 	const handleChange = (e: any) => {
 		const { name, value, type, checked } = e.currentTarget;
@@ -181,7 +180,6 @@ function App() {
 							{sectorsData.map((item) => renderSubMenu(item))}
 						</Menu>
 					}
-					placement="bottom"
 				>
 					<a
 						href="#"
