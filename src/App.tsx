@@ -3,6 +3,8 @@ import { fetchData } from "./helper";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Space } from "antd";
 import { MenuInfo } from "rc-menu/lib/interface";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase-config";
 
 interface MenuItem {
 	key: string;
@@ -27,13 +29,50 @@ function renderSubMenu(item: MenuItem): React.ReactNode {
 	return <Menu.Item key={item.key}>{item.label}</Menu.Item>;
 }
 
+const items = [
+	{
+		key: "1",
+		type: "group",
+		label: "Group title",
+		children: [
+			{
+				key: "1-1",
+				label: "1st menu item",
+			},
+			{
+				key: "1-2",
+				label: "2nd menu item",
+			},
+		],
+	},
+];
+
+const menu = (
+	<Menu>
+		{/* Your menu items go here */}
+		<Menu.Item key="1">Item 1</Menu.Item>
+		<Menu.Item key="2">Item 2</Menu.Item>
+		<Menu.Item key="3">Item 3</Menu.Item>
+	</Menu>
+);
 function App() {
+	const [users, setUsers] = useState<any>();
+	console.log("App ~ users >", users);
+	const userCollection = collection(db, "selector");
 	const [inputValue, setInputValue] = useState("");
 	const [isFocused, setFocused] = useState(false);
 	const [data, setData] = useState<MenuItem[] | undefined>();
 	const [selectedItem, setSelectedItem] = useState<
 		SelectedItem | undefined
 	>();
+
+	useEffect(() => {
+		const getUsers = async () => {
+			const data = await getDocs(userCollection);
+			setUsers(data.docs.map((doc) => ({ ...doc.data() })));
+		};
+		getUsers();
+	}, []);
 
 	useEffect(() => {
 		const dataResponse = async () => {
@@ -77,11 +116,11 @@ function App() {
 				</label>
 			</div>
 
-			{data && (
+			{users && (
 				<Dropdown
 					overlay={
 						<Menu onClick={handleMenuClick}>
-							{data.map((item) => renderSubMenu(item))}
+							{users.map((item: any) => renderSubMenu(item))}
 						</Menu>
 					}
 				>
@@ -116,3 +155,28 @@ function App() {
 }
 
 export default App;
+
+// {data && (
+// 	<Dropdown
+// 		overlay={
+// 			<Menu onClick={handleMenuClick}>
+// 				{data.map((item) => renderSubMenu(item))}
+// 			</Menu>
+// 		}
+// 	>
+// 		<a
+// 			href="#"
+// 			onClick={(e) => e.preventDefault()}
+// 			className="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded mr-[150px] sm:mr-0"
+// 		>
+// 			<Space>
+// 				{selectedItem ? (
+// 					<span>{selectedItem.value}</span>
+// 				) : (
+// 					<span>Cascading menu</span>
+// 				)}
+// 				<DownOutlined />
+// 			</Space>
+// 		</a>
+// 	</Dropdown>
+// )}
