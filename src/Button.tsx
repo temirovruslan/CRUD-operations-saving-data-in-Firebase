@@ -2,7 +2,7 @@ import { ButtonProps } from "./helper/type";
 
 const Button: React.FC<ButtonProps> = ({ onClick, save }) => {
 	return (
-		<button className="send-button" onClick={onClick}>
+		<button className="send-button mr-2" onClick={onClick}>
 			<div className="svg-wrapper-1">
 				{save && (
 					<div className="svg-wrapper">
