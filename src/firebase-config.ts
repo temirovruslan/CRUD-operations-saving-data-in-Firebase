@@ -4,15 +4,15 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC0IWtKT-0nk04ZR-TFiUGAElyCPPg9FPo",
-  authDomain: "challenge-9f9b9.firebaseapp.com",
-  databaseURL: "https://challenge-9f9b9-default-rtdb.firebaseio.com",
-  projectId: "challenge-9f9b9",
-  storageBucket: "challenge-9f9b9.appspot.com",
-  messagingSenderId: "836269466128",
-  appId: "1:836269466128:web:75eb30fcde5f05608f2095"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_authDomain,
+  databaseURL: import.meta.env.VITE_databaseURL,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db =  getFirestore(app)
+export const db = getFirestore(app);
