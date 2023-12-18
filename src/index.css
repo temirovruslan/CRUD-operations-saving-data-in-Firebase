@@ -6,11 +6,10 @@
 	background: linear-gradient(to bottom, #4dc7d9 0%, #66a6ff 100%);
 }
 .custom-gradient-border {
-    border-width: 2px; 
-    border-style: solid;
-    border-image: linear-gradient(to bottom, #4dc7d9 0%, #66a6ff 100%);
-   
-  }
+	border-width: 2px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #4dc7d9 0%, #66a6ff 100%);
+}
 button {
 	font-family: inherit;
 	font-size: 18px;
@@ -67,4 +66,24 @@ button:hover .svg-wrapper {
 
 button:hover svg {
 	transform: rotate(45deg);
+}
+/* ul li {
+	display: inline;
+}
+
+.ant-menu-vertical.ant-menu-sub > .ant-menu-item {
+	display: inline;
+}
+
+.ant-menu-submenu-popup {
+	top: 0px !important;
+	right: 5% !important;
+	left: auto !important;
+	width: 400px;
+} */
+.ant-dropdown-menu .ant-dropdown-menu-sub .ant-dropdown-menu-vertical {
+	width: 200px !important;
+}
+.ant-dropdown-menu-submenu {
+	inset: 0 0 0 0 !important;
 }

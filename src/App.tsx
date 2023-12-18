@@ -18,7 +18,16 @@ import { MenuItem } from "./helper/type";
 function renderSubMenu(item: MenuItem): React.ReactNode {
 	if (item.children && item.children.length > 0) {
 		return (
-			<Menu.SubMenu key={item.key} title={item.label}>
+			<Menu.SubMenu
+				// style={{
+				// 	position: "absolute",
+				// 	bottom: "10px",
+				// 	// zIndex: 1,
+				// 	transition: "all 0.2s",
+				// }}
+				key={item.key}
+				title={item.label}
+			>
 				{item.children.map((child) => renderSubMenu(child))}
 			</Menu.SubMenu>
 		);
@@ -175,6 +184,7 @@ function App() {
 
 			{sectorsData && (
 				<Dropdown
+					// placement="bottom"
 					overlay={
 						<Menu onClick={handleMenuClick}>
 							{sectorsData.map((item) => renderSubMenu(item))}
