@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { fetchData } from "./helper";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, Space } from "antd";
 import { MenuInfo } from "rc-menu/lib/interface";
@@ -32,12 +31,8 @@ function renderSubMenu(item: MenuItem): React.ReactNode {
 
 function App() {
 	const [users, setUsers] = useState<any>();
-	console.log("App ~ users >", users);
 
 	const userCollection = collection(db, "users");
-	const [inputValue, setInputValue] = useState("");
-	const [isFocused, setFocused] = useState(false);
-	const [data, setData] = useState<MenuItem[] | undefined>();
 	const [selectedItem, setSelectedItem] = useState<
 		SelectedItem | undefined
 	>();
@@ -48,18 +43,6 @@ function App() {
 			setUsers(data.docs.map((doc) => ({ ...doc.data() })));
 		};
 		getUsers();
-	}, []);
-
-	useEffect(() => {
-		const dataResponse = async () => {
-			try {
-				const data = await fetchData();
-				setData(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		dataResponse();
 	}, []);
 
 	const handleMenuClick: (info: MenuInfo & { key: React.Key }) => void = (
@@ -73,7 +56,7 @@ function App() {
 	return (
 		<div className="min-h-screen flex flex-col justify-center items-center  p-8">
 			{users &&
-				users.map((user, i) => {
+				users.map((user: { name: string }, i: number) => {
 					return <li key={i}>{user.name}</li>;
 				})}
 			{sectorsData && (
