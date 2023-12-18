@@ -67,23 +67,35 @@ button:hover .svg-wrapper {
 button:hover svg {
 	transform: rotate(45deg);
 }
-/* ul li {
-	display: inline;
-}
 
-.ant-menu-vertical.ant-menu-sub > .ant-menu-item {
-	display: inline;
-}
-
-.ant-menu-submenu-popup {
-	top: 0px !important;
-	right: 5% !important;
-	left: auto !important;
-	width: 400px;
-} */
-.ant-dropdown-menu .ant-dropdown-menu-sub .ant-dropdown-menu-vertical {
-	width: 200px !important;
-}
 .ant-dropdown-menu-submenu {
-	inset: 0 0 0 0 !important;
+	@media (max-width: 650px) {
+		inset: 0 0 0 0 !important;
+	}
+}
+.user-card {
+	border: 1px solid #ddd;
+	padding: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.user-info {
+	flex-grow: 1;
+}
+
+.user-actions {
+	display: flex;
+	gap: 8px;
+}
+.users {
+	width: 500px;
+	@media (max-width: 768px) {
+		width: 300px;
+	}
+	@media (max-width: 400px) {
+		width: 250px;
+	}
 }

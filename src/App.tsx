@@ -14,20 +14,14 @@ import {
 import { db } from "./firebase-config";
 import { sectorsData } from "./helper/data";
 import { MenuItem } from "./helper/type";
+import toast, { Toaster } from "react-hot-toast";
+import UserInfos from "./UserInfos";
+import Button from "./Button";
 
 function renderSubMenu(item: MenuItem): React.ReactNode {
 	if (item.children && item.children.length > 0) {
 		return (
-			<Menu.SubMenu
-				// style={{
-				// 	position: "absolute",
-				// 	bottom: "10px",
-				// 	// zIndex: 1,
-				// 	transition: "all 0.2s",
-				// }}
-				key={item.key}
-				title={item.label}
-			>
+			<Menu.SubMenu key={item.key} title={item.label}>
 				{item.children.map((child) => renderSubMenu(child))}
 			</Menu.SubMenu>
 		);
@@ -75,19 +69,24 @@ function App() {
 		});
 	};
 	const handleSaveEdit = async () => {
+		if (!newUser.name || !newUser.term || !newUser.selected) {
+			toast("Fill in all the blanks to make the form happy!", {
+				icon: "😬",
+			});
+			return;
+		}
+
 		if (editingUserId) {
-			// Get the reference to the document to be updated
 			const userDocRef = doc(userCollection, editingUserId);
 
-			// Use updateDoc to update the document with the new data
 			await updateDoc(userDocRef, {
 				name: newUser.name,
 				term: newUser.term,
 				selected: newUser.selected,
 			});
 		}
+		toast.success("Successfully toasted!");
 
-		// Reset state
 		setEditMode(false);
 		setEditingUserId(null);
 		setNewUser({
@@ -120,17 +119,26 @@ function App() {
 		});
 	};
 	const createUserInfo = async () => {
+		if (!newUser.name || !newUser.term || !newUser.selected) {
+			toast("Fill in all the blanks to make the form happy!", {
+				icon: "😬",
+			});
+			return;
+		}
+
 		await addDoc(userCollection, {
 			name: newUser.name,
 			term: newUser.term,
 			selected: newUser.selected,
 		});
+		toast.success("Successfully toasted!");
 		setNewUser({
 			name: "",
 			term: null,
 			selected: "",
 		});
 	};
+
 	const handleDelete = async (userId: string) => {
 		try {
 			const userDocRef = doc(userCollection, userId);
@@ -160,6 +168,7 @@ function App() {
 	}, [userCollection]);
 	return (
 		<div className="min-h-screen flex flex-col  items-center  p-8">
+			<Toaster />
 			<div className="relative mt-6">
 				<input
 					type="text"
@@ -184,7 +193,6 @@ function App() {
 
 			{sectorsData && (
 				<Dropdown
-					// placement="bottom"
 					overlay={
 						<Menu onClick={handleMenuClick}>
 							{sectorsData.map((item) => renderSubMenu(item))}
@@ -228,68 +236,14 @@ function App() {
 			) : (
 				<Button onClick={createUserInfo} save />
 			)}
-
-			{users &&
-				users.map(
-					(
-						user: {
-							name: string;
-							term: boolean;
-							selected: string;
-							id: string;
-						},
-						i: number
-					) => (
-						<div key={i} className="flex  items-center mt-2">
-							<span>
-								Name: {user.name}, Term:{" "}
-								{user.term ? "Agreed" : "Not Agreed"}, Selected:{" "}
-								{user.selected}
-							</span>
-							<button
-								className="ml-2"
-								onClick={() => handleEditClick(user.id)}
-							>
-								Edit
-							</button>
-							<button
-								className="ml-2"
-								onClick={() => handleDelete(user.id)}
-							>
-								Delete
-							</button>
-						</div>
-					)
-				)}
+			{users && (
+				<UserInfos
+					users={users}
+					handleDelete={handleDelete}
+					handleEditClick={handleEditClick}
+				/>
+			)}
 		</div>
 	);
 }
 export default App;
-
-const Button = (props: any) => {
-	const { onClick, save } = props;
-
-	return (
-		<button className="send-button" onClick={onClick}>
-			<div className="svg-wrapper-1">
-				{save && (
-					<div className="svg-wrapper">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							width="24"
-							height="24"
-						>
-							<path fill="none" d="M0 0h24v24H0z"></path>
-							<path
-								fill="currentColor"
-								d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-							></path>
-						</svg>
-					</div>
-				)}
-			</div>
-			<span>{save ? "Save" : "Cancel"}</span>
-		</button>
-	);
-};
